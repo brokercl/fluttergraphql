@@ -1,5 +1,5 @@
 class QueryMutation {
-  String addUser(String id, String user, String email) {
+  String addUser(int id, String user, String email) {
     return """
       mutation{
           addUser(id: "$id", user: "$user", email: "$email"){
@@ -33,7 +33,7 @@ class QueryMutation {
     """;
   }
 
-  String editUser(String id, String user, String email){
+  String editUser(int id, String user, String email){
     return """
       mutation{
           editUser(id: "$id", user: "$user", email: "$email"){

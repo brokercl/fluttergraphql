@@ -31,7 +31,7 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
   void initState() {
     super.initState();
     if (!this.isAdd) {
-      txtId.text = user.getId();
+      txtId.text = user.getId().toString();
       txtUser.text = user.getUser();
       txtEmail.text = user.getEmail();
     }
@@ -118,7 +118,7 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
                 QueryResult result = await _client.mutate(
                   MutationOptions(
                     document: addMutation.addUser(
-                      txtId.text,
+                      int.parse(txtId.text),
                       txtUser.text,
                       txtEmail.text,
                     ),
@@ -135,7 +135,7 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
                 QueryResult result = await _client.mutate(
                   MutationOptions(
                     document: addMutation.editUser(
-                      txtId.text,
+                      int.parse(txtId.text),
                       txtUser.text,
                       txtEmail.text,
                     ),

@@ -1,7 +1,7 @@
 class User {
   User(this.id, this.user, this.email);
 
-  final String id;
+  final int id;
   final String user;
   final String email;
 
