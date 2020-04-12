@@ -1,13 +1,17 @@
 class QueryMutation {
-  String addUser(int id, String user, String email) {
+  String createUser(String name, String email, String password) {
     return """
       mutation{
-          addUser(id: "$id", user: "$user", email: "$email"){
-            id
-            user
-            email
+          createUser(
+            data: {
+              name: "$name", email: "$email", password: "$password"}
+                    )
+                    {
+                      name
+                      email
+                      password
+                    }
           }
-      }
     """;
   }
 
@@ -16,7 +20,7 @@ class QueryMutation {
       {
         users{
           id
-          user
+          name
           email
         }
       }
@@ -26,19 +30,22 @@ class QueryMutation {
   String deleteUser(id){
     return """
       mutation{
-        deleteUser(id: "$id"){
+        deleteUser( where: {id: "$id"}){
           id
         }
       } 
     """;
   }
 
-  String editUser(int id, String user, String email){
+  String updateUser(String id, String name, String email, String password){
     return """
       mutation{
-          editUser(id: "$id", user: "$user", email: "$email"){
-            user
+          updateUser( where: {id: "$id"}
+          data: {name: "$name", email: "$email", password: "$password"})
+          {
+            name
             email
+            password
           }
       }    
      """;

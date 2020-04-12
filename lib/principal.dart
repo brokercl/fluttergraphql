@@ -28,8 +28,9 @@ class _Principal extends State<Principal> {
           listUser.add(
             User(
               result.data["users"][i]["id"],
-              result.data["users"][i]["user"],
+              result.data["users"][i]["name"],
               result.data["users"][i]["email"],
+              result.data["users"][i]["password"],
             ),
           );
         });
@@ -103,7 +104,7 @@ class _Principal extends State<Principal> {
                 return ListTile(
                   selected: listUser == null ? false : true,
                   title: Text(
-                    "${listUser[index].getUser()}",
+                    "${listUser[index].getName()}",
                   ),
                   onTap: () {
                     _editDeleteUser(context, listUser[index]);

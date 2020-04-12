@@ -1,14 +1,13 @@
 class User {
-  User(this.id, this.user, this.email);
+  User(this.id, this.name, this.email, this.password);
 
-  final int id;
-  final String user;
+  final String id;
+  final String name;
   final String email;
+  final String password;
 
   getId() => this.id;
-
-  getUser() => this.user;
-
+  getName() => this.name;
   getEmail() => this.email;
-
+  getPassword() => this.password;
 }

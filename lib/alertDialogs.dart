@@ -17,8 +17,9 @@ class AlertDialogWindow extends StatefulWidget {
 
 class _AlertDialogWindow extends State<AlertDialogWindow> {
   TextEditingController txtId = TextEditingController();
-  TextEditingController txtUser = TextEditingController();
+  TextEditingController txtName = TextEditingController();
   TextEditingController txtEmail = TextEditingController();
+  TextEditingController txtPassword = TextEditingController();
   GraphQLConfiguration graphQLConfiguration = GraphQLConfiguration();
   QueryMutation addMutation = QueryMutation();
 
@@ -31,9 +32,10 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
   void initState() {
     super.initState();
     if (!this.isAdd) {
-      txtId.text = user.getId().toString();
-      txtUser.text = user.getUser();
+      txtId.text = user.getId();
+      txtName.text = user.getName();
       txtEmail.text = user.getEmail();
+      txtPassword.text = user.getPassword();
     }
   }
 
@@ -51,24 +53,13 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
             child: Stack(
               children: <Widget>[
                 Container(
-                  child: TextField(
-                    maxLength: 5,
-                    controller: txtId,
-                    enabled: this.isAdd,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.perm_identity),
-                      labelText: "ID",
-                    ),
-                  ),
-                ),
-                Container(
                   padding: EdgeInsets.only(top: 80.0),
                   child: TextField(
                     maxLength: 40,
-                    controller: txtUser,
+                    controller: txtName,
                     decoration: InputDecoration(
                       icon: Icon(Icons.text_format),
-                      labelText: "User",
+                      labelText: "Name",
                     ),
                   ),
                 ),
@@ -83,6 +74,19 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
                     ),
                   ),
                 ),
+
+                Container(
+                  padding: EdgeInsets.only(top: 240.0),
+                  child: TextField(
+                    maxLength: 40,
+                    controller: txtPassword,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.text_rotate_vertical),
+                      labelText: "Password",
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),
@@ -110,41 +114,45 @@ class _AlertDialogWindow extends State<AlertDialogWindow> {
         FlatButton(
           child: Text(this.isAdd ? "Add" : "Edit"),
           onPressed: () async {
-            if (txtId.text.isNotEmpty &&
-                txtUser.text.isNotEmpty &&
-                txtEmail.text.isNotEmpty )
+            if (txtName.text.isNotEmpty &&
+                txtEmail.text.isNotEmpty &&
+                txtPassword.text.isNotEmpty
+            )
               if (this.isAdd) {
                 GraphQLClient _client = graphQLConfiguration.clientToQuery();
                 QueryResult result = await _client.mutate(
                   MutationOptions(
-                    document: addMutation.addUser(
-                      int.parse(txtId.text),
-                      txtUser.text,
+                    document: addMutation.createUser(
+                      txtName.text,
                       txtEmail.text,
+                      txtPassword.text
                     ),
                   ),
                 );
                 if (!result.hasException) {
                   txtId.clear();
-                  txtUser.clear();
+                  txtName.clear();
                   txtEmail.clear();
+                  txtPassword.clear();
                   Navigator.of(context).pop();
                 }
               } else {
                 GraphQLClient _client = graphQLConfiguration.clientToQuery();
                 QueryResult result = await _client.mutate(
                   MutationOptions(
-                    document: addMutation.editUser(
-                      int.parse(txtId.text),
-                      txtUser.text,
+                    document: addMutation.updateUser(
+                      txtId.text,
+                      txtName.text,
                       txtEmail.text,
+                      txtPassword.text
                     ),
                   ),
                 );
                 if (!result.hasException) {
                   txtId.clear();
-                  txtUser.clear();
+                  txtName.clear();
                   txtEmail.clear();
+                  txtPassword.clear();
                   Navigator.of(context).pop();
                 }
               }
